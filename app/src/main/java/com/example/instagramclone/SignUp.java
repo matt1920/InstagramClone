@@ -51,7 +51,8 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
         btnLogin.setOnClickListener(this);
 
         if (ParseUser.getCurrentUser() != null) {
-            ParseUser.getCurrentUser().logOut();
+           // ParseUser.getCurrentUser().logOut();
+            transitionToSocialMediaActivity();
         }
 
     }
@@ -71,6 +72,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
                     Toast.makeText(SignUp.this,
                             "Email, Username, Password is required!", Toast.LENGTH_LONG).show();
 
+
                 }else {
 
 
@@ -88,6 +90,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
                         public void done(ParseException e) {
                             if (e == null) {
                                 Toast.makeText(SignUp.this, appUser.getUsername() + " is signed up successfully", Toast.LENGTH_LONG).show();
+                                transitionToSocialMediaActivity();
                             } else {
                                 Toast.makeText(SignUp.this, "There was en error: " + e.getMessage(), Toast.LENGTH_LONG).show();
                             }
@@ -113,5 +116,11 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    private void transitionToSocialMediaActivity(){
+
+        Intent intent = new Intent(SignUp.this, SocialMediaActivity.class);
+        startActivity(intent);
     }
 }
