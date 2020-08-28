@@ -5,12 +5,12 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -165,22 +165,15 @@ public class SharePictureTab extends Fragment implements View.OnClickListener {
                 // The below codes used for getting an image from the user device in the FRAGMENT
                 try {
                     Uri selectedImage = data.getData();
-                    String[] filePathColumn = {MediaStore.Images.Media.DATA};
-                    Cursor cursor = getActivity().getContentResolver().query(selectedImage,
-                            filePathColumn, null, null, null);
-                    cursor.moveToFirst();
-                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                    String picturePath = cursor.getString(columnIndex);
-                    cursor.close();
-                    receivedImageBitmap = BitmapFactory.decodeFile(picturePath);
-
-                    imgShare.setImageBitmap(receivedImageBitmap);
-
+                    Bitmap myBitmap = BitmapFactory.decodeStream(getContext().getContentResolver().openInputStream(selectedImage));
+                    if(myBitmap == null)
+                        Log.d("Image","bummer");
+                    imgShare.setImageBitmap(myBitmap);
                 }catch (Exception e) {
-
                     e.printStackTrace();
-
                 }
+
+
             }
         }
 
